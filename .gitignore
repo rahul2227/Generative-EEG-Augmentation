@@ -244,3 +244,7 @@ data/
 
 # PyPI configuration file
 .pypirc
+
+# Claude agents
+.claude-agents/
+.claude
