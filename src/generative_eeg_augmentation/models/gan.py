@@ -222,10 +222,10 @@ def load_generator(
 ) -> EEGGenerator:
     """
     Load a pre-trained EEG generator from saved checkpoint.
-    
+
     This function creates an EEGGenerator instance and loads weights from
     the appropriate checkpoint file based on the model variant.
-    
+
     Args:
         model_variant: One of "original" or "enhanced". Determines checkpoint path.
         device: PyTorch device string ("cpu", "cuda", "mps").
@@ -233,14 +233,14 @@ def load_generator(
         n_channels: Number of EEG channels (default: 63).
         target_signal_len: Length of generated signal in samples (default: 1001).
         num_classes: Number of conditional classes (default: 2).
-    
+
     Returns:
         Initialized EEGGenerator in eval mode with loaded weights.
-    
+
     Raises:
         ValueError: If model_variant is not recognized.
         FileNotFoundError: If checkpoint file does not exist.
-    
+
     Example:
         >>> gen = load_generator("original", device="cpu")
         >>> noise = torch.randn(10, 100)
@@ -250,11 +250,14 @@ def load_generator(
         >>> synthetic_eeg.shape
         torch.Size([10, 63, 1001])
     """
+    # Get project root path (4 levels up from this file: models -> generative_eeg_augmentation -> src -> project_root)
+    project_root = Path(__file__).parent.parent.parent.parent
+
     # Determine checkpoint path based on variant
     if model_variant == "original":
-        checkpoint_path = Path("exploratory notebooks/models/best_generator.pth")
+        checkpoint_path = project_root / "exploratory notebooks" / "models" / "best_generator.pth"
     elif model_variant == "enhanced":
-        checkpoint_path = Path("exploratory notebooks/models/enhanced/best_generator.pth")
+        checkpoint_path = project_root / "exploratory notebooks" / "models" / "enhanced" / "best_generator.pth"
     else:
         raise ValueError(
             f"Unknown model_variant: {model_variant}. "
@@ -295,7 +298,7 @@ def load_discriminator(
 ) -> Union[EEGDiscriminator, EEGDiscriminatorEnhanced]:
     """
     Load a pre-trained EEG discriminator from saved checkpoint.
-    
+
     Args:
         model_variant: One of "original" or "enhanced". Determines checkpoint path.
         enhanced: If True, load EEGDiscriminatorEnhanced architecture (default: False).
@@ -303,25 +306,28 @@ def load_discriminator(
         n_channels: Number of EEG channels (default: 63).
         target_signal_len: Length of input signal in samples (default: 1001).
         num_classes: Number of conditional classes (default: 2).
-    
+
     Returns:
         Initialized discriminator in eval mode with loaded weights.
-    
+
     Raises:
         ValueError: If model_variant is not recognized.
         FileNotFoundError: If checkpoint file does not exist.
-    
+
     Example:
         >>> disc = load_discriminator("original", device="cpu")
         >>> eeg = torch.randn(10, 63, 1001)
         >>> labels = torch.zeros(10, 2)
         >>> score = disc(eeg, labels)
     """
+    # Get project root path (4 levels up from this file: models -> generative_eeg_augmentation -> src -> project_root)
+    project_root = Path(__file__).parent.parent.parent.parent
+
     # Determine checkpoint path based on variant
     if model_variant == "original":
-        checkpoint_path = Path("exploratory notebooks/models/best_discriminator.pth")
+        checkpoint_path = project_root / "exploratory notebooks" / "models" / "best_discriminator.pth"
     elif model_variant == "enhanced":
-        checkpoint_path = Path("exploratory notebooks/models/enhanced/best_discriminator.pth")
+        checkpoint_path = project_root / "exploratory notebooks" / "models" / "enhanced" / "best_discriminator.pth"
     else:
         raise ValueError(
             f"Unknown model_variant: {model_variant}. "
