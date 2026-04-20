@@ -248,3 +248,4 @@ data/
 # Claude agents
 .claude-agents/
 .claude
+*.bak
